@@ -15,7 +15,7 @@
 
         <v-toolbar-title class="white--text"> GeoSpoc <small> - Test Project</small></v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-label dark>Candidate - Pranil Rathod</v-label>
+        <v-btn text small dark=""><v-icon size="26" left>info_outline</v-icon>About</v-btn>
 
     </v-app-bar>
 

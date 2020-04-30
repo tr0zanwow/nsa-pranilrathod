@@ -2,28 +2,21 @@
 import { Bar } from 'vue-chartjs'
 
 export default {
-  extends: Bar,
-  data: () => ({
+    extends: Bar,
+    props: {
     chartdata: {
-      labels: ['January', 'February'],
-      datasets: [
-        {
-          label: 'Data One',
-          backgroundColor: '#f87979',
-          data: [40, 20]
-        }
-      ]
+      type: Object,
+      default: null
     },
     options: {
-      responsive: true,
-      maintainAspectRatio: false
+      type: Object,
+      default: null
     }
-  }),
-
-  mounted () {
-    this.renderChart(this.chartdata, this.options)
-  }
-}
+  },
+    mounted () {
+        this.renderChart(this.chartdata, this.options)
+    }
+    }
 </script>
 
 <style>
