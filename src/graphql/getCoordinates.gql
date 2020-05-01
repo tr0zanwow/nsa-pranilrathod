@@ -1,0 +1,13 @@
+query getCoordinates{
+	getCoordinates{
+    features{
+      attributes{
+        pincode
+        locality
+      }
+      geometry{
+        rings
+      }
+    }
+  }
+}

@@ -128,8 +128,10 @@
 </style>
 
 <script>
-import Mapbox from "mapbox-gl-vue";
-import BarChart from "../charts/BarChart.vue";
+import Mapbox from "mapbox-gl-vue"
+import BarChart from "../charts/BarChart.vue"
+import getCoordinates from "../graphql/getCoordinates.gql"
+import searchData from "../graphql/searchData.gql"
 import 'mapbox-gl/dist/mapbox-gl.css'
 
 export default {
@@ -733,6 +735,28 @@ export default {
 // });
     }
   },
+
+  apollo:{
+
+    getCoordinates:{
+      query: getCoordinates,
+      result({ data, loading, networkStatus}){
+      },
+      error(error){
+        console.error("Got An Error", error)
+      }
+    },
+
+    searchData:{
+      query: searchData,
+      result({ data, loading, networkStatus}){
+      },
+      error(error){
+        console.error("Got An Error", error)
+      }
+    }
+  },
+
 	data: () => ({
     chartdata: {
       labels: ['January', 'February','March','April','May', 'June', 'July'],
