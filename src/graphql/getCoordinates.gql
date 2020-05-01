@@ -1,6 +1,5 @@
 query getCoordinates{
 	getCoordinates{
-    features{
       attributes{
         pincode
         locality
@@ -9,5 +8,4 @@ query getCoordinates{
         rings
       }
     }
-  }
 }
