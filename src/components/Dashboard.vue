@@ -737,10 +737,11 @@ export default {
   },
 
   apollo:{
-
     getCoordinates:{
       query: getCoordinates,
       result({ data, loading, networkStatus}){
+        console.log("Coordinates")
+        console.log(data)
       },
       error(error){
         console.error("Got An Error", error)
@@ -749,7 +750,15 @@ export default {
 
     searchData:{
       query: searchData,
+      variables(){
+        return{
+          pincode: this.pincode,
+          locality: null
+        }
+      },
       result({ data, loading, networkStatus}){
+        console.log("Search Data")
+        console.log(data)
       },
       error(error){
         console.error("Got An Error", error)
@@ -758,6 +767,9 @@ export default {
   },
 
 	data: () => ({
+    pincode: 560096,
+    getCoordinates: null,
+    searchData: null,
     chartdata: {
       labels: ['January', 'February','March','April','May', 'June', 'July'],
       datasets: [
