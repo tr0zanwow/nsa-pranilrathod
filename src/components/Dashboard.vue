@@ -96,8 +96,8 @@
             access-token="pk.eyJ1IjoidHIwemFud293IiwiYSI6ImNrOWwzcXllbzAwdTgzZXA5amlkNTVib3QifQ.WGdBMQVJlRuVEPj1ILjs6Q"
             :map-options="{
               style: 'mapbox://styles/mapbox/light-v9',
-              center: [77.5946, 12.9716],
-              zoom: 8,
+              center: [77.373063, 12.953625],
+              zoom: 10,
               attributionControl: false,
             }"
 			:geolocate-control="{
@@ -139,13 +139,14 @@ export default {
     loaded(map){
       map.addSource('maine', {
           'type': 'geojson',
-          'data': {
+          'data': 
+          {
           'type': 'Feature',
           'geometry': {
           'type': 'Polygon',
           'coordinates': [
             [
-             [
+            [
               77.479470000000006,
               12.958931
             ],

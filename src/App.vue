@@ -15,8 +15,8 @@
 
         <v-toolbar-title class="white--text"> GeoSpoc <small> - Test Project</small></v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn text small dark=""><v-icon size="26" left>dashboard</v-icon>Dashboard</v-btn>
-        <v-btn text small dark=""><v-icon size="26" left>info_outline</v-icon>About</v-btn>
+        <v-btn to="/dashboard" text small dark=""><v-icon size="26" left>dashboard</v-icon>Dashboard</v-btn>
+        <v-btn to="/about" text small dark=""><v-icon size="26" left>info_outline</v-icon>About</v-btn>
 
     </v-app-bar>
 
@@ -25,7 +25,9 @@
         class="fill-height"
         fluid
       >
-        <Dashboard></Dashboard>
+        <transition name="fade">
+          <router-view></router-view>
+        </transition>
       </v-container>
     </v-content>
   </v-app>
@@ -39,15 +41,12 @@
 </style>
 
 <script>
-import Dashboard from './components/Dashboard.vue';
-
 export default {
   name: 'App',
   props: {
       source: String,
     },
   components: {
-    Dashboard,
   },
 
   data: () => ({
