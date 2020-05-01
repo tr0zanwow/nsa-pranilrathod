@@ -1,0 +1,17 @@
+query searchData($pincode: Int, $locality: String){
+    population
+    households
+    district_n
+    state_name
+    other
+    house
+    food
+    apparel
+    teansport
+    health
+    finance
+    education
+    entertainment
+    city
+    income
+}
