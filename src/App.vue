@@ -15,6 +15,7 @@
 
         <v-toolbar-title class="white--text"> GeoSpoc <small> - Test Project</small></v-toolbar-title>
         <v-spacer></v-spacer>
+        <v-btn text small dark=""><v-icon size="26" left>dashboard</v-icon>Dashboard</v-btn>
         <v-btn text small dark=""><v-icon size="26" left>info_outline</v-icon>About</v-btn>
 
     </v-app-bar>

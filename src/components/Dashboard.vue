@@ -5,7 +5,7 @@
       style="width: 100%;"
     >
       <div class="d-flex justify-space-between">
-        <v-card width="250" outlined elevation="10">
+        <v-card width="200" outlined elevation="10">
           <v-list-item two-line>
             <v-list-item-avatar tile size="50">
               <v-icon size="50" light color="green darken-2">room</v-icon>
@@ -17,7 +17,7 @@
           </v-list-item>
         </v-card>
 
-        <v-card width="250" outlined elevation="10">
+        <v-card class="ml-2" width="200" outlined elevation="10">
           <v-list-item two-line>
             <v-list-item-avatar tile size="50">
               <v-icon size="50" light color="green darken-2">group</v-icon>
@@ -29,7 +29,7 @@
           </v-list-item>
         </v-card>
 
-        <v-card width="250" outlined elevation="10">
+        <v-card width="200" outlined elevation="10">
           <v-list-item two-line>
             <v-list-item-avatar tile size="50">
               <v-icon size="50" light color="green darken-2">apartment</v-icon>
@@ -41,7 +41,19 @@
           </v-list-item>
         </v-card>
 
-        <v-card width="250" outlined elevation="10">
+        <v-card width="200" outlined elevation="10">
+          <v-list-item two-line>
+            <v-list-item-avatar tile size="50">
+              <v-icon size="50" light color="green darken-2">mdi-currency-inr</v-icon>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title class="title mb-1">256689</v-list-item-title>
+              <v-list-item-subtitle>Income</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-card>
+
+        <v-card width="200" outlined elevation="10">
           <v-list-item two-line>
             <v-list-item-avatar tile size="50">
               <v-icon size="50" light color="green darken-2"
@@ -57,7 +69,7 @@
           </v-list-item>
         </v-card>
 
-        <v-card width="250" outlined elevation="10">
+        <v-card width="200" outlined elevation="10">
           <v-list-item two-line>
             <v-list-item-avatar tile size="50">
               <v-icon size="50" light color="green darken-2">public</v-icon>
@@ -70,7 +82,7 @@
         </v-card>
       </div>
 
-      <div style="width: 100%;" class="d-flex fill-height mt-3 mb-n2">
+      <div style="width: 100%;" class="d-flex fill-height mt-2 mb-n5">
         <v-card
           class="fill-height"
           width="45%"
@@ -712,12 +724,12 @@ export default {
           'fill-opacity': 0.5
           }
           });
-          map.on('click', 'maine', function(e) {
-            new mapboxgl.Popup()
-            .setLngLat(e.lngLat)
-            .setHTML("<strong>Wonderfull</strong>")
-            .addTo(map);
-});
+//           map.on('click', 'maine', function(e) {
+//             new mapboxgl.Popup()
+//             .setLngLat(e.lngLat)
+//             .setHTML("<strong>Wonderfull</strong>")
+//             .addTo(map);
+// });
     }
   },
 	data: () => ({
