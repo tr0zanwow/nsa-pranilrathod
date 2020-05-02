@@ -26,7 +26,9 @@
         fluid
       >
         <transition name="fade">
-          <router-view></router-view>
+          <keep-alive>
+            <router-view></router-view>
+          </keep-alive>
         </transition>
       </v-container>
     </v-content>
