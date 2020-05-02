@@ -15,5 +15,7 @@ query searchData($pincode: Int, $locality: String){
         entertainment
         city
         income
+        pincode
+        locality
     }
 }
