@@ -53,7 +53,8 @@
       "no-unused-vars": "off",
       "vue/no-unused-vars": "off",
       "no-console": "off",
-      "no-undef": "off"
+      "no-undef": "off",
+      "vue/no-unused-components": "off"
     },
     "overrides": [
       {
