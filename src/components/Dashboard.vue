@@ -1,18 +1,18 @@
 <template>
-  <v-container class="fill-height" fluid="">
+  <v-container v-if="!isMobile()" class="fill-height d-none d-xl-flex d-none d-lg-flex d-xl-none d-none d-md-flex d-lg-none d-none d-sm-flex d-md-none" fluid="">
     <div
       class="d-flex fill-height flex-column justify-space-between mt-n6"
       style="width: 100%;"
-    >
+      >
       <div class="d-flex justify-space-between">
 
-        <v-card v-for="(item,index) in statsCardData" :key="index" width="200" outlined elevation="10">
+        <v-card v-for="(item,index) in statsCardData" :key="index" min-width="250" max-width="300" outlined elevation="10">
           <v-list-item two-line>
             <v-list-item-avatar tile size="50">
               <v-icon size="50" light color="green darken-2">{{item.icon}}</v-icon>
             </v-list-item-avatar>
             <v-list-item-content>
-              <v-list-item-title class="title mb-1">{{item.value}}</v-list-item-title>
+              <v-list-item-title style="display: block;word-wrap:break-word;width: 50px;white-space: normal" class="title mb-1">{{item.value}}</v-list-item-title>
               <v-list-item-subtitle>{{item.label}}</v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
@@ -52,18 +52,58 @@
         </v-card>
 
         <v-card class="fill-height ml-2" width="55%" outlined elevation="10">
-          <BarChart class="fill-height" :chartData="chartData" :options="options" />
+          <BarChart style="height: auto" class="mt-4" :chartData="chartData" :options="options" />
         </v-card>
       </div>
-       
+        <v-overlay :value="isOverlaySet">
+          <v-progress-circular indeterminate size="64"></v-progress-circular>
+        </v-overlay>
     </div>
     
   </v-container>
+
+  <v-layout v-else style="width:100%;" class="d-flex d-sm-none fill-height">
+      <v-card
+          style=""
+          class=""
+          width="100%"
+          height="100%"
+          outlined
+          elevation="10"
+        >
+          <mapbox
+            class="fill-height"
+            style="width: 100%;"
+            access-token="pk.eyJ1IjoidHIwemFud293IiwiYSI6ImNrOWwzcXllbzAwdTgzZXA5amlkNTVib3QifQ.WGdBMQVJlRuVEPj1ILjs6Q"
+            :map-options="{
+              style: 'mapbox://styles/mapbox/light-v9',
+              center: [77.5946, 12.9716],
+              zoom: 10,
+              attributionControl: false,
+            }"
+			:geolocate-control="{
+				show: true,
+				position: 'top-right',
+			}"
+			:scale-control="{
+				show: true,
+				position: 'bottom-left',
+			}"
+			@map-load="loaded"
+
+          />
+        </v-card>
+        <BottomSheet :chartData="chartDataMob" :statsData="statsCardDataMob" :sheet="popupSheet"/>
+        <v-overlay :value="isOverlaySet">
+          <v-progress-circular indeterminate size="64"></v-progress-circular>
+        </v-overlay>
+  </v-layout>
 </template>
 
 <style lang="scss">
 ::-webkit-scrollbar {
   display: none;
+
 }
 </style>
 
@@ -73,13 +113,13 @@ import BarChart from "../charts/BarChart.vue"
 import getCoordinates from "../graphql/getCoordinates.gql"
 import searchData from "../graphql/searchData.gql"
 import PopupContent from '../charts/others/Popup.vue'
-import { EventBus } from '../event-bus.js';
+import { EventBus } from '../event-bus.js'
+import BottomSheet from '../charts/others/BottomSheet.vue'
 import 'mapbox-gl/dist/mapbox-gl.css'
-
 
 export default {
   name: "Dashboard",
-  components: { Mapbox, BarChart },
+  components: { Mapbox, BarChart, BottomSheet },
 	data: () => ({
     chartData :  {
           labels: ['House', 'Food','Apparel','Transport','Health', 'Finance', 'Education', 'Entertainment', 'Other'],
@@ -91,6 +131,10 @@ export default {
             }
           ]
         },
+    statsCardDataMob: null,
+    chartDataMob: null,
+    popupSheet: false,
+    isOverlaySet: false,
     getCoordinates: null,
     skipQuery: true,
     coordinatesLoading: true,
@@ -99,8 +143,7 @@ export default {
       { icon: 'group', label: 'Population', value: 'N/A'},
       { icon: 'apartment', label: 'Households', value: 'N/A'},
       { icon: 'mdi-currency-inr', label: 'Income', value: 'N/A'},
-      { icon: 'mdi-google-maps', label: 'City', value: 'N/A'},
-      { icon: 'mdi-google-maps', label: 'Country', value: 'India'}
+      { icon: 'mdi-google-maps', label: 'City', value: 'N/A'}
     ],
     searchData: null,
     options: {
@@ -121,6 +164,13 @@ export default {
     }
   }),
   methods:{
+    isMobile() {
+   if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+     return true
+   } else {
+     return false
+   }
+ },
     loaded(map){
       var featureCollection = []
       if(!this.coordinatesLoading){
@@ -182,6 +232,10 @@ export default {
             }
           ]
         }
+      this.chartDataMob = {
+        chartData: this.chartData,
+        options: this.options
+      }
       }
       else{
         this.chartData =  {
@@ -194,6 +248,10 @@ export default {
             }
           ]
         }
+        this.chartDataMob = {
+        chartData: this.chartData,
+        options: this.options
+      }
       }   
     },
     setStatsData(payload){
@@ -204,6 +262,24 @@ export default {
       this.statsCardData[3].value = payload.income == null ? 'N/A' : payload.income
       this.statsCardData[4].value = payload.city == null ? payload.state_name : payload.city
       this.statsCardData[4].label = payload.city == null ? "State" : "City"
+      
+      this.statsCardDataMob =  {
+        pinLoc: {
+          value: this.statsCardData[0].value,
+          label: this.statsCardData[0].label
+        },
+        dataGrp: [
+          [
+            { icon: 'group', label: 'Population', value: this.statsCardData[1].value},
+            { icon: 'apartment', label: 'Households', value: this.statsCardData[2].value}
+          ],
+          [
+            { icon: 'mdi-currency-inr', label: 'Income', value: this.statsCardData[3].value},
+            { icon: 'mdi-google-maps', label: 'City', value: this.statsCardData[4].value}
+          ]
+        ]
+      }
+        
     }
   },
 
@@ -212,6 +288,8 @@ export default {
       query: getCoordinates,
       result({ data, loading, networkStatus}){
         this.coordinatesLoading = loading
+        if(!loading)
+        console.log("Coordinates loaded")
       },
       error(error){
         console.error("Got An Error", error)
@@ -233,6 +311,8 @@ export default {
         if(!loading){
           this.setStatsData(data.searchData)
           this.setChartData(data.searchData)
+          this.popupSheet = true
+          this.isOverlaySet = false
         }
       },
       error(error){
@@ -243,6 +323,7 @@ export default {
 	mounted(){
     var vm = this
     EventBus.$on('searchPincode', function(payload) {
+        vm.isOverlaySet = true
         vm.skipQuery = false
         vm.$apollo.queries.searchData.refetch({
           pincode: parseInt(payload.split('Pincode: ')[1]),
@@ -251,12 +332,14 @@ export default {
     });
 
     EventBus.$on('searchLocality', function(payload) {
+        vm.isOverlaySet = true
         vm.skipQuery = false
         vm.$apollo.queries.searchData.refetch({
           locality: payload.split('Locality: ')[1],
           pincode: null
           })
     });
+    window.scrollTo(0,0);
 	}
 };
 </script>
