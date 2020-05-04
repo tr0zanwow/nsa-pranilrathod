@@ -136,8 +136,6 @@ export default {
     popupSheet: false,
     isOverlaySet: false,
     getCoordinates: null,
-    skipQuery: true,
-    coordinatesLoading: true,
     statsCardData: [
       { icon: 'room', label: 'Pincode', value: 'N/A'},
       { icon: 'group', label: 'Population', value: 'N/A'},
@@ -171,10 +169,10 @@ export default {
      return false
    }
  },
-    loaded(map){
+    async loaded(map){
       var featureCollection = []
-      if(!this.coordinatesLoading){
-          this.getCoordinates.forEach(element => {
+      var coordinateData = await this.$apollo.query({ query: getCoordinates})
+          coordinateData.data.getCoordinates.forEach(element => {
             featureCollection.push({
                     'type': 'Feature',
                     'properties': {
@@ -218,7 +216,6 @@ export default {
         }).$mount('#popup-content')
 
         });
-      }
     },
     setChartData(payload){
       if(payload.education == null){
@@ -280,65 +277,31 @@ export default {
         ]
       }
         
-    }
-  },
-
-  apollo:{
-    getCoordinates:{
-      query: getCoordinates,
-      result({ data, loading, networkStatus}){
-        this.coordinatesLoading = loading
-        if(!loading)
-        console.log("Coordinates loaded")
-      },
-      error(error){
-        console.error("Got An Error", error)
-      }
     },
-
-    searchData:{
-      query: searchData,
-      variables(){
-        return{
-          pincode: this.pincode,
-          locality: null
-        }
-      },
-      skip() {
-        return this.skipQuery
-      },
-      result({ data, loading, networkStatus}){
-        if(!loading){
-          this.setStatsData(data.searchData)
-          this.setChartData(data.searchData)
-          this.popupSheet = true
-          this.isOverlaySet = false
-        }
-      },
-      error(error){
-        console.error("Got An Error", error)
-      }
+    async getSearchData(payload){
+      this.isOverlaySet = true        
+        var statsData = await this.$apollo.query({ 
+          query: searchData, 
+          variables: 
+            { 
+              
+                  pincode: payload.includes("Pincode") ? parseInt(payload.split('Pincode: ')[1]) : null,
+                  locality: payload.includes("Locality") ? payload.split('Locality: ')[1] : null,
+                
+            }
+        })
+        this.setStatsData(statsData.data.searchData)
+        this.setChartData(statsData.data.searchData)
+        this.isOverlaySet = false
+        this.popupSheet = true
     }
   },
 	mounted(){
     var vm = this
-    EventBus.$on('searchPincode', function(payload) {
-        vm.isOverlaySet = true
-        vm.skipQuery = false
-        vm.$apollo.queries.searchData.refetch({
-          pincode: parseInt(payload.split('Pincode: ')[1]),
-          locality: null
-          })
+    EventBus.$on('searchData', function(payload) {
+        vm.getSearchData(payload)
     });
 
-    EventBus.$on('searchLocality', function(payload) {
-        vm.isOverlaySet = true
-        vm.skipQuery = false
-        vm.$apollo.queries.searchData.refetch({
-          locality: payload.split('Locality: ')[1],
-          pincode: null
-          })
-    });
     window.scrollTo(0,0);
 	}
 };

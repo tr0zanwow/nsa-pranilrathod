@@ -17,12 +17,7 @@ export default Vue.extend({
   },
   methods: {
     popupClicked() {
-      if(this.description.includes('Pincode')){
-          EventBus.$emit('searchPincode',this.description)
-      }
-      else{
-          EventBus.$emit('searchLocality',this.description)
-      }
+        EventBus.$emit('searchData',this.description)
     },
   },
 })

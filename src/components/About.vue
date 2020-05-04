@@ -80,10 +80,11 @@
 		<!-- PC Browser Layout -->
 		<v-card
 			elevation="10"
-			class="fill-height d-flex justify-center align-center flex-column d-none d-xl-flex d-none d-lg-flex d-xl-none d-none d-md-flex d-lg-none d-none d-sm-flex d-md-none"
+			class="fill-height d-none d-xl-flex d-none d-lg-flex d-xl-none d-none d-md-flex d-lg-none d-none d-sm-flex d-md-none"
 			width="100%"
 			outlined
 		>
+		<div style="width:100%" class="d-flex justify-center align-center flex-column fill-height">
 
 			<div class="text-center mt-2 d-flex">
 				<v-icon size="45" color="deep-orange darken-3">room</v-icon>
@@ -137,6 +138,7 @@
 					</div>
 				</div>
 			</v-container>
+					</div>
 
 		</v-card>
 	</v-container>
